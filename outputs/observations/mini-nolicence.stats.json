@@ -1,0 +1,23 @@
+{
+  "source_id": "mini-nolicence",
+  "extractor_version": "cfg1+eng0.1.0+f0025018",
+  "records": 3,
+  "seconds": 0.02,
+  "fields": {
+    "ABN -> entity.abn": {
+      "emitted": 1,
+      "null": 1,
+      "rejected": 1
+    },
+    "NAME -> entity.legal_name": {
+      "emitted": 3,
+      "null": 0,
+      "rejected": 0
+    },
+    "STATE -> address.state": {
+      "emitted": 2,
+      "null": 1,
+      "rejected": 0
+    }
+  }
+}

@@ -1,0 +1,14 @@
+config_version: '1'
+source: {source_id: mini-nolicence, licence: test-only, source_reliability: 0.5}
+reader: {format: csv}
+record_id: {strategy: field, field: ID, how: 'cột ID của fixture'}
+observed_at: {strategy: constant, value: '2026-01-01T00:00:00Z'}
+fields:
+  - {source_field: ABN, canonical_field: entity.abn, transforms: [{name: digits_only}], field_confidence: 0.9, rationale: test}
+  - {source_field: NAME, canonical_field: entity.legal_name, transforms: [{name: trim}], field_confidence: 0.9, rationale: test}
+  - source_field: STATE
+    canonical_field: address.state
+    transforms: [{name: upper}, {name: map, table: {NEW SOUTH WALES: NSW, VICTORIA: VIC}}]
+    field_confidence: 0.9
+    rationale: test
+unmapped: []

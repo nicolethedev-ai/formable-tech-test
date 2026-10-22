@@ -1,0 +1,4 @@
+{"source_record_id": "1", "canonical_field": "entity.mau_sac", "raw_value": "Acme Pty Ltd", "value": "Acme Pty Ltd", "reason": "canonical_field not in ontology"}
+{"source_record_id": "2", "canonical_field": "entity.abn", "raw_value": "51 824 753 557", "value": "51824753557", "reason": "checksum failed"}
+{"source_record_id": "2", "canonical_field": "entity.mau_sac", "raw_value": "Bad Abn Pty Ltd", "value": "Bad Abn Pty Ltd", "reason": "canonical_field not in ontology"}
+{"source_record_id": "3", "canonical_field": "entity.mau_sac", "raw_value": "No Abc Co", "value": "No Abc Co", "reason": "canonical_field not in ontology"}
