@@ -1,0 +1,23 @@
+{
+  "source_id": "mini",
+  "extractor_version": "cfg1+eng0.1.0+1112950d",
+  "records": 3,
+  "seconds": 0.03,
+  "fields": {
+    "ABN -> entity.abn": {
+      "emitted": 1,
+      "null": 1,
+      "rejected": 1
+    },
+    "NAME -> entity.legal_name": {
+      "emitted": 3,
+      "null": 0,
+      "rejected": 0
+    },
+    "STATE -> address.state": {
+      "emitted": 2,
+      "null": 1,
+      "rejected": 0
+    }
+  }
+}
