@@ -1,0 +1,5 @@
+.venv/
+.env
+data/raw/
+mlruns/
+__pycache__/
