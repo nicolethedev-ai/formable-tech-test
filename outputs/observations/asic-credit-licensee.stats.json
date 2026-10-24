@@ -1,0 +1,48 @@
+{
+  "source_id": "asic-credit-licensee",
+  "extractor_version": "cfg2+eng0.1.0+7676b723",
+  "records": 1000,
+  "seconds": 0.24,
+  "fields": {
+    "CRED_LIC_NAME -> entity.legal_name": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    },
+    "CRED_LIC_BN -> entity.trading_name": {
+      "emitted": 428,
+      "null": 572,
+      "rejected": 0
+    },
+    "CRED_LIC_ABN_ACN -> entity.abn": {
+      "emitted": 889,
+      "null": 0,
+      "rejected": 111
+    },
+    "CRED_LIC_STATUS -> entity.status": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    },
+    "CRED_LIC_START_DT -> entity.date_registered": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    },
+    "CRED_LIC_LOCALITY -> address.locality": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    },
+    "CRED_LIC_STATE -> address.state": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    },
+    "CRED_LIC_PCODE -> address.postcode": {
+      "emitted": 1000,
+      "null": 0,
+      "rejected": 0
+    }
+  }
+}

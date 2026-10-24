@@ -46,7 +46,7 @@ def row_hash(rec):
     return hashlib.sha1(json.dumps(rec, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
 def make_record_id(spec, rec):
-    if spec['strategy'] == 'field':
+    if spec.get('strategy') == 'field' and spec.get('field'):
         vals = get_values(rec, spec['field'])
         if vals:
             return str(vals[0])
@@ -60,14 +60,17 @@ def apply(value, steps):
             return None
     return value
 
-def extract(config_path, data_path, out_dir='outputs', limit=1000):
+def extract(config_path, data_path, out_dir='outputs', limit=1000, cfg=None, records=None):
     t0 = time.time()
-    cfg = yaml.safe_load(open(config_path, encoding='utf-8'))
+    if cfg is None:
+        cfg = yaml.safe_load(open(config_path, encoding='utf-8'))
     jsonschema.validate(cfg, CONFIG_SCHEMA)
     cfg_hash = hashlib.sha1(json.dumps(cfg, sort_keys=True).encode()).hexdigest()[:8]
     version = 'cfg' + str(cfg['config_version']) + '+eng' + ENGINE_VERSION + '+' + cfg_hash
     sid = cfg['source']['source_id']
-    records = read_records(data_path, cfg['reader'])[:limit]
+    if records is None:
+        records = read_records(data_path, cfg['reader'])
+    records = records[:limit]          
     ingested = datetime.now(timezone.utc).isoformat()
     os.makedirs(out_dir + '/observations', exist_ok=True)
     os.makedirs(out_dir + '/rejects', exist_ok=True)
@@ -120,4 +123,10 @@ def extract(config_path, data_path, out_dir='outputs', limit=1000):
     return summary
 
 if __name__ == '__main__':
-    print(json.dumps(extract(sys.argv[1], sys.argv[2]), indent=2))
+    if len(sys.argv) < 2:
+        sys.exit('Cách dùng: python -m src.core.engine <config.yaml> [du_lieu]')
+    data = sys.argv[2] if len(sys.argv) > 2 else None
+    if data is None:
+        sid = yaml.safe_load(open(sys.argv[1], encoding='utf-8'))['source']['source_id']
+        data = json.load(open('data/raw/' + sid + '.meta.json'))['path']
+    print(json.dumps(extract(sys.argv[1], data), indent=2))

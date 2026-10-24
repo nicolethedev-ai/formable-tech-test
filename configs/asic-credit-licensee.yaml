@@ -1,0 +1,92 @@
+config_version: '2'
+dataset_kind: Australian credit licensees regulated by ASIC
+source:
+  source_id: asic-credit-licensee
+  licence: cc-by
+  source_reliability: 0.7
+reader:
+  format: csv
+  encoding: utf-8-sig
+  delimiter: ','
+record_id:
+  strategy: hash
+  how: sha1 of row content (model gave no usable key column)
+observed_at:
+  strategy: constant
+  value: '2026-10-22T02:19:31.159850'
+fields:
+- source_field: CRED_LIC_NAME
+  canonical_field: entity.legal_name
+  field_confidence: 0.95
+  rationale: Column explicitly contains licensee names; 100% non-null, 150 distinct
+    values.
+  transforms:
+  - name: trim
+- source_field: CRED_LIC_BN
+  canonical_field: entity.trading_name
+  field_confidence: 0.85
+  rationale: BN likely stands for Business Name; 35.3% non-null with 53 distinct trading
+    names.
+  transforms:
+  - name: trim
+- source_field: CRED_LIC_ABN_ACN
+  canonical_field: entity.abn
+  field_confidence: 0.87
+  rationale: 87.3% of values pass ABN checksum validation; column name indicates ABN/ACN
+    mix.
+  transforms:
+  - name: digits_only
+- source_field: CRED_LIC_STATUS
+  canonical_field: entity.status
+  field_confidence: 0.9
+  rationale: All 150 rows show 'APPR' (approved); maps to active status.
+  transforms:
+  - name: map
+    table:
+      APPR: active
+- source_field: CRED_LIC_START_DT
+  canonical_field: entity.date_registered
+  field_confidence: 0.95
+  rationale: Column contains license start dates in DD/MM/YYYY format; 100% non-null.
+  transforms:
+  - name: date_parse
+    formats:
+    - '%d/%m/%Y'
+- source_field: CRED_LIC_LOCALITY
+  canonical_field: address.locality
+  field_confidence: 0.95
+  rationale: Column explicitly contains locality names; 100% non-null, 108 distinct
+    values.
+  transforms:
+  - name: trim
+- source_field: CRED_LIC_STATE
+  canonical_field: address.state
+  field_confidence: 0.98
+  rationale: Column contains 2-letter state codes; 100% non-null with state_like=1.0.
+  transforms:
+  - name: upper
+- source_field: CRED_LIC_PCODE
+  canonical_field: address.postcode
+  field_confidence: 0.95
+  rationale: Column contains 4-digit Australian postcodes; 100% non-null.
+  transforms:
+  - name: trim
+unmapped:
+- source_field: CRED_LIC_ACN
+  reason: Only 8.7% pass ACN checksum; most values are ABN. Mapping rejected due to
+    94% pattern mismatch on validation.
+- source_field: CRED_LIC_LAT
+  reason: Latitude coordinate; no canonical field for geographic coordinates in ontology.
+- source_field: CRED_LIC_LNG
+  reason: Longitude coordinate; no canonical field for geographic coordinates in ontology.
+- source_field: CRED_LIC_AFSL_NUM
+  reason: AFSL (Australian Financial Services Licence) number; distinct from credit
+    licence, no canonical field.
+- source_field: CRED_LIC_AUTHORISATIONS
+  reason: Long-form license authorisation text; no canonical field for regulatory
+    authorisation details.
+- source_field: CRED_LIC_EDRS
+  reason: External Dispute Resolution Scheme codes (AFCA, FOS, COSL); no canonical
+    field for dispute resolution scheme.
+- source_field: REGISTER_NAME
+  reason: Metadata field ('Credit Licence'); not entity data.
